@@ -1,0 +1,71 @@
+// Server side code
+const net = require('net');
+
+const server = net.createServer((socket) => {
+    // Handle incoming client requests
+    socket.on('data', (data) => {
+        // Process the incoming data from the client
+        const request = parseRequest(data);
+        const response = processRequest(request);
+        
+        // Send the response back to the client
+        socket.write(response);
+    });
+    
+    // Handle client disconnection
+    socket.on('end', () => {
+        console.log('Client disconnected');
+    });
+});
+
+// Start the server
+server.listen(5432, () => {
+    console.log('Server listening on port 5432');
+});
+
+// Client side code
+const net = require('net');
+
+const client = net.createConnection({ port: 5432 }, () => {
+    console.log('Connected to server');
+    
+    // Send a request to the server
+    const request = buildRequest('SELECT * FROM users');
+    client.write(request);
+});
+
+// Handle server response
+client.on('data', (data) => {
+    // Process the response from the server
+    const response = parseResponse(data);
+    console.log('Received response:', response);
+    
+    // Close the connection
+    client.end();
+});
+
+// Handle connection termination
+client.on('end', () => {
+    console.log('Disconnected from server');
+});
+
+// Helper functions for request/response parsing and building
+function parseRequest(data) {
+    // Parse the request data and return a request object
+    // Implement your own logic here
+}
+
+function processRequest(request) {
+    // Process the request and return a response
+    // Implement your own logic here
+}
+
+function buildRequest(query) {
+    // Build a request string from the query
+    // Implement your own logic here
+}
+
+function parseResponse(data) {
+    // Parse the response data and return a response object
+    // Implement your own logic here
+}
